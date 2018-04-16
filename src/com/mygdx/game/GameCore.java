@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Meneger.GraphicMeneger;
+import com.mygdx.game.Screens.MissionsScreen.Mission2;
 import com.mygdx.game.Screens.Start;
 
 public class GameCore extends Game
@@ -13,6 +15,7 @@ public class GameCore extends Game
 	public SpriteBatch batch;
 	public OrthographicCamera camera;
 	public OrthographicCamera cameraUserLayer;
+	public GraphicMeneger graphicMeneger;
 
 	public GameCore() {
 		super();
@@ -29,8 +32,8 @@ public class GameCore extends Game
 		camera = new OrthographicCamera(800,480);
         camera.position.set(400,240,0);
 		cameraUserLayer = new OrthographicCamera(800,480);
-
-		this.setScreen(new Start(this));
+		graphicMeneger=new GraphicMeneger();
+		this.setScreen(new Mission2(this));
 	}
 
 	@Override
