@@ -12,6 +12,7 @@ public class GameCore extends Game
 {
 	public SpriteBatch batch;
 	public OrthographicCamera camera;
+	public OrthographicCamera cameraUserLayer;
 
 	public GameCore() {
 		super();
@@ -27,7 +28,7 @@ public class GameCore extends Game
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(800,480);
         camera.position.set(400,240,0);
-
+		cameraUserLayer = new OrthographicCamera(800,480);
 
 		this.setScreen(new Start(this));
 	}

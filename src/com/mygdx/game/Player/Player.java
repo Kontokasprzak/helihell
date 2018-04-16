@@ -40,8 +40,9 @@ public class Player {
     {
     if(x>positionX&&x<positionX+width&&y>positionY&&y<positionY+height){return true;}
     return false;
-    }
+}
     public float getRotation(){
         return sprite.getRotation();
     }
+    public void flip(){sprite.flip(true,false);}
 }

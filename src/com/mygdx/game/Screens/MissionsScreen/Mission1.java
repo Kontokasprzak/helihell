@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.FlipButton;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Phisic;
 import com.mygdx.game.Player.Player;
@@ -25,6 +26,7 @@ public class Mission1 implements Screen {
     Player player;
     Phisic phisic;
     Pixmap pixmap;
+    FlipButton flipButton;
     public Mission1(GameCore game){
 
         this.game=game;
@@ -32,7 +34,8 @@ public class Mission1 implements Screen {
         pixmap=new Pixmap(Gdx.files.internal("pixmap1.png"));
         mapa=new Texture("map1.png");
         phisic=new Phisic(player);
-
+        flipButton= new FlipButton(player);
+        flipButton.onClick();
 
 
     }
@@ -44,7 +47,7 @@ public class Mission1 implements Screen {
     public void render(float delta) {
         pixmanager();
         phisic.update();
-
+        if(Gdx.input.isTouched(1)){flipButton.onClick();}
 
 
 
@@ -59,6 +62,11 @@ public class Mission1 implements Screen {
 
         game.batch.draw(mapa,0,0);
         player.render(game);
+
+        game.batch.end();
+        game.batch.setProjectionMatrix(game.cameraUserLayer.combined);
+        game.batch.begin();
+        flipButton.render(game.batch);
         game.batch.end();
     }
 
