@@ -22,7 +22,9 @@ public class Player {
     public List<PlayerRocket> playerRocketList;
    public float positionX;
     public float positionY;
-    public Player(float positionX, float positionY){
+    public float shootDeleay;
+    GameCore game;
+    public Player(float positionX, float positionY, GameCore game){
         width=64;
         height=64;
         this.positionX=positionX;
@@ -31,6 +33,7 @@ public class Player {
         sprite=new Sprite(texture);
         hitbox= new Hitbox((int)positionX,(int)positionY,width,height);
         playerRocketList= new ArrayList<PlayerRocket>();
+        this.game= game;
 
     }
     public void render(GameCore game){
@@ -42,6 +45,11 @@ public class Player {
     public void rotate(float stopnie){
         sprite.setRotation(stopnie);
 
+    }
+    public void shoot(){
+        if(shootDeleay>0){return;}
+        game.shootMeneger.addProjectile(new PlayerRocket(positionX,positionY,sprite.getRotation(),250,0,game.graphicMeneger.rocket));
+        shootDeleay=1;
     }
 
 

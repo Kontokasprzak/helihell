@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class GraphicMeneger {
     Texture player;
-    Texture bunker;
-    Texture rocket;
+    public Texture bunker;
+    public Texture rocket;
     Texture bullet;
     Texture flipButton;
     Texture shootButton;
@@ -18,8 +18,8 @@ public class GraphicMeneger {
     Texture map1;
     public GraphicMeneger(){
         player=new Texture("heli.png");
-        bunker=new Texture("heli.png");
-        rocket=new Texture("heli.png");
+        bunker=new Texture("bunker.png");
+        rocket=new Texture("rocket.png");
         map1=new Texture("heli.png");
       //  player=new Texture("heli.png");
       //  player=new Texture("heli.png");

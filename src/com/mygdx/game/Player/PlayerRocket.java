@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.AbstractClass.Projectile;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Hitbox;
 
@@ -11,8 +12,11 @@ import com.mygdx.game.Hitbox;
  * Created by Wqawer on 2018-04-16.
  */
 
-public class PlayerRocket {
-    float radius;
+public class PlayerRocket extends Projectile{
+    public PlayerRocket(float positionX, float positionY, float rotation, float speed, float radius, Texture texture) {
+        super(positionX, positionY, rotation, speed, radius, texture);
+    }
+/*    float radius;
     float speed;
     public Hitbox hitbox;
     Texture texture;
@@ -37,5 +41,5 @@ public class PlayerRocket {
         sprite.draw(game.batch);
     }
 
-
+*/
 }

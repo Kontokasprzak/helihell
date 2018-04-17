@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.GameCore;
+import com.mygdx.game.Screens.MissionsScreen.Mission2;
 
 /**
  * Created by Wqawer on 2018-04-11.
@@ -33,7 +34,7 @@ public class GameOver implements Screen{
         game.batch.begin();
         gameOver.draw(game.batch,"GAME OVER",0,0);
         game.batch.end();
-        if(Gdx.input.isTouched()){game.setScreen(new Start(game));}
+        if(Gdx.input.isTouched()){game.setScreen(new Mission2(game));}
     }
 
     @Override

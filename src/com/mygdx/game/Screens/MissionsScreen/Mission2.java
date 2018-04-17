@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.AbstractClass.EnemyUnit;
 import com.mygdx.game.Enemy.Bunker;
 import com.mygdx.game.FlipButton;
 import com.mygdx.game.GameCore;
@@ -14,6 +15,8 @@ import com.mygdx.game.Player.Player;
 import com.mygdx.game.Player.PlayerRocket;
 import com.mygdx.game.Screens.GameOver;
 import com.mygdx.game.Screens.Win;
+
+import java.util.ArrayList;
 
 /**
  * Created by Wqawer on 2018-04-11.
@@ -30,16 +33,19 @@ public class Mission2 implements Screen {
     FlipButton flipButton;
     PlayerRocket playerRocket;
     Bunker bunker;
+    ArrayList<EnemyUnit> listOfEnemy;
     public Mission2(GameCore game){
 
         this.game=game;
-        player=new Player(50,50);
+        player=new Player(50,50, game);
         pixmap=new Pixmap(Gdx.files.internal("pixmap1.png"));
         mapa=new Texture("map1.png");
         phisic=new Phisic(player);
         flipButton= new FlipButton(player);
-        playerRocket=new PlayerRocket(player.positionX,player.positionX,0);
-        bunker=new Bunker(game,200,50);
+     //   playerRocket=new PlayerRocket(player.positionX,player.positionX,0);
+
+        listOfEnemy= new ArrayList<EnemyUnit>();
+        setEnemy();
 
     }
     @Override
@@ -50,7 +56,7 @@ public class Mission2 implements Screen {
     public void render(float delta) {
         pixmanager();
         phisic.update();
-        if(Gdx.input.isTouched(1)){flipButton.onClick();}
+       // if(Gdx.input.isTouched(1)){flipButton.onClick();}
 
 
 
@@ -65,15 +71,24 @@ public class Mission2 implements Screen {
 
         game.batch.draw(mapa,0,0);
         player.render(game);
-        bunker.render();
-        if(Gdx.input.isTouched(1)){
-            player.playerRocketList.add(new PlayerRocket(player.positionX,player.positionY,player.getRotation()));}
-        if(player.playerRocketList.size()>100)
-        {player.playerRocketList.remove(1);}
-        for(int i=0;i<player.playerRocketList.size();i++){
-            player.playerRocketList.get(i).render(game);
-            if(bunker.hitbox.overlaps(player.playerRocketList.get(i).hitbox.getX(),player.playerRocketList.get(i).hitbox.getY())){bunker.hp=0;}
+        game.shootMeneger.shootUpdate(listOfEnemy);
+        for(EnemyUnit x:listOfEnemy)
+        {
+            x.render(game.batch);
         }
+        if(Gdx.input.isTouched(1)){
+           //game.shootMeneger.addProjectile(new PlayerRocket(player.positionX,player.positionY,player.getRotation(),100,0,game.graphicMeneger.rocket));
+           player.shoot();
+            }
+        player.shootDeleay-=1*Gdx.graphics.getDeltaTime();
+      // if(player.playerRocketList.size()>100)
+        //{player.playerRocketList.remove(1);}
+      //  for(int i=0;i<player.playerRocketList.size();i++){
+        //    player.playerRocketList.get(i).render(game);
+           // if(bunker.hitbox.overlaps(player.playerRocketList.get(i).hitbox.getX(),player.playerRocketList.get(i).hitbox.getY())){
+            //    bunker.hp=0;
+              //  player.playerRocketList.remove(i);}
+     //}
         game.batch.end();
         game.batch.setProjectionMatrix(game.cameraUserLayer.combined);
         game.batch.begin();
@@ -132,5 +147,8 @@ public class Mission2 implements Screen {
         return phisic.crash();
 
 
+    }
+    public void setEnemy(){
+        listOfEnemy.add(new Bunker(game.graphicMeneger.bunker,200,50));
     }
 }
