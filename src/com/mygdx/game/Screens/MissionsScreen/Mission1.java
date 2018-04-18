@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.FlipButton;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Phisic;
 import com.mygdx.game.Player.Player;
+import com.mygdx.game.Player.PlayerRocket;
 import com.mygdx.game.Screens.GameOver;
 import com.mygdx.game.Screens.Win;
 
@@ -25,14 +27,17 @@ public class Mission1 implements Screen {
     Player player;
     Phisic phisic;
     Pixmap pixmap;
+    FlipButton flipButton;
+    PlayerRocket playerRocket;
     public Mission1(GameCore game){
 
         this.game=game;
-        player=new Player(50,50);
+        player=new Player(50,50, game);
         pixmap=new Pixmap(Gdx.files.internal("pixmap1.png"));
         mapa=new Texture("map1.png");
         phisic=new Phisic(player);
-
+        flipButton= new FlipButton(player);
+     //   playerRocket=new PlayerRocket(player.positionX,player.positionX,0);
 
 
     }
@@ -44,7 +49,7 @@ public class Mission1 implements Screen {
     public void render(float delta) {
         pixmanager();
         phisic.update();
-
+        if(Gdx.input.isTouched(1)){flipButton.onClick();}
 
 
 
@@ -59,6 +64,15 @@ public class Mission1 implements Screen {
 
         game.batch.draw(mapa,0,0);
         player.render(game);
+        if(Gdx.input.isTouched()){
+         //   player.playerRocketList.add(new PlayerRocket(player.positionX,player.positionY,player.getRotation()));
+            }
+
+       // for(int i=0;i<player.playerRocketList.size();i++){player.playerRocketList.get(i).render(game);}
+        game.batch.end();
+        game.batch.setProjectionMatrix(game.cameraUserLayer.combined);
+        game.batch.begin();
+   //     flipButton.render(game.batch);
         game.batch.end();
     }
 

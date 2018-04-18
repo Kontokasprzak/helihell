@@ -82,9 +82,7 @@ public class Phisic {
         player.positionX+=horizontalSpeed;
         player.positionY+=verticalSpeed;
     }
-    public boolean crash(Color color){
-        return false;
-    }
+
     public void acceleration() {
         rotorSpeed += rotorAcceleration;
         if(rotorSpeed>rotorMaxSpeed){rotorSpeed=rotorMaxSpeed;}
@@ -100,8 +98,11 @@ public class Phisic {
         }
         verticalSpeed=0;
         Gdx.app.log("Ground","SPEED: "+verticalSpeed );
-        horizontalSpeed-=groundRriction*Gdx.graphics.getDeltaTime();
+        if(Math.abs(horizontalSpeed)<groundRriction*Gdx.graphics.getDeltaTime()){horizontalSpeed=0;}
+        else{ horizontalSpeed-=groundRriction*Gdx.graphics.getDeltaTime();}
+
         return false;
     }
+
 }
 
