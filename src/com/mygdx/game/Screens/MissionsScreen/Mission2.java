@@ -8,12 +8,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.AbstractClass.EnemyUnit;
 import com.mygdx.game.Enemy.Bunker;
-import com.mygdx.game.FlipButton;
+import com.mygdx.game.Enemy.Tower;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Phisic;
 import com.mygdx.game.Player.Player;
-import com.mygdx.game.Player.PlayerRocket;
+import com.mygdx.game.Screens.Button;
 import com.mygdx.game.Screens.GameOver;
+import com.mygdx.game.Screens.UserInterface;
 import com.mygdx.game.Screens.Win;
 
 import java.util.ArrayList;
@@ -30,10 +31,13 @@ public class Mission2 implements Screen {
     Player player;
     Phisic phisic;
     Pixmap pixmap;
-    FlipButton flipButton;
-    PlayerRocket playerRocket;
-    Bunker bunker;
+    Button fire, flip;
     ArrayList<EnemyUnit> listOfEnemy;
+    UserInterface userInterface;
+    Tower tower;
+    Bunker bunker;
+
+
     public Mission2(GameCore game){
 
         this.game=game;
@@ -41,12 +45,14 @@ public class Mission2 implements Screen {
         pixmap=new Pixmap(Gdx.files.internal("pixmap1.png"));
         mapa=new Texture("map1.png");
         phisic=new Phisic(player);
-        flipButton= new FlipButton(player);
-     //   playerRocket=new PlayerRocket(player.positionX,player.positionX,0);
-
         listOfEnemy= new ArrayList<EnemyUnit>();
-        setEnemy();
+        fire= new Button(200,-200,game.graphicMeneger.shootButton);
+        flip= new Button(250,-150,game.graphicMeneger.flipButton);
 
+        userInterface= new UserInterface(game,player,phisic);
+        tower=new Tower(game.graphicMeneger.tower,1500,50);
+        bunker=new Bunker(game.graphicMeneger.bunker,1600,50);
+        setEnemy();
     }
     @Override
     public void show() {
@@ -56,44 +62,30 @@ public class Mission2 implements Screen {
     public void render(float delta) {
         pixmanager();
         phisic.update();
-       // if(Gdx.input.isTouched(1)){flipButton.onClick();}
 
 
 
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 1, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.camera.position.set(player.positionX,player.positionY,0);
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
-
         game.batch.draw(mapa,0,0);
         player.render(game);
-        game.shootMeneger.shootUpdate(listOfEnemy);
+        game.shootMeneger.shootUpdate(listOfEnemy,player);
         for(EnemyUnit x:listOfEnemy)
         {
             x.render(game.batch);
         }
-        if(Gdx.input.isTouched(1)){
-           //game.shootMeneger.addProjectile(new PlayerRocket(player.positionX,player.positionY,player.getRotation(),100,0,game.graphicMeneger.rocket));
-           player.shoot();
-            }
+        tower.shoot(player.positionX,player.positionY,game);
         player.shootDeleay-=1*Gdx.graphics.getDeltaTime();
-      // if(player.playerRocketList.size()>100)
-        //{player.playerRocketList.remove(1);}
-      //  for(int i=0;i<player.playerRocketList.size();i++){
-        //    player.playerRocketList.get(i).render(game);
-           // if(bunker.hitbox.overlaps(player.playerRocketList.get(i).hitbox.getX(),player.playerRocketList.get(i).hitbox.getY())){
-            //    bunker.hp=0;
-              //  player.playerRocketList.remove(i);}
-     //}
         game.batch.end();
-        game.batch.setProjectionMatrix(game.cameraUserLayer.combined);
-        game.batch.begin();
-        //     flipButton.render(game.batch);
-        game.batch.end();
+        userInterface.render();
+
+
     }
 
     @Override
@@ -126,7 +118,7 @@ public class Mission2 implements Screen {
         int blue=(int)(color.b*255);
         int green=(int)(color.g*255);
         int red=(int)(color.r*255);
-        if(winManager(red)){game.setScreen(new Win(game));}
+        if(winManager()){game.setScreen(new Win(game));}
         if(blue==255){
             phisic.onGround=true;
             if(crash()){
@@ -135,11 +127,11 @@ public class Mission2 implements Screen {
         }
         else{phisic.onGround=false;}
     }
-    //transport medyczny
-    public boolean winManager(int red){
+
+    public boolean winManager(){
 
 
-        if(red==255){return true;}
+        if(listOfEnemy.size()==0){return true;}
         return false;
     }
     public boolean crash(){
@@ -149,6 +141,6 @@ public class Mission2 implements Screen {
 
     }
     public void setEnemy(){
-        listOfEnemy.add(new Bunker(game.graphicMeneger.bunker,200,50));
-    }
+        listOfEnemy.add(tower);
+        listOfEnemy.add(bunker);}
 }

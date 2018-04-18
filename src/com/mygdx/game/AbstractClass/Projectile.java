@@ -29,6 +29,7 @@ public abstract class Projectile {
         this.positionY=positionY;
         sprite= new Sprite(texture);
         sprite.setPosition(positionX,positionY);
+        sprite.setRotation(rotation);
 
 
     }

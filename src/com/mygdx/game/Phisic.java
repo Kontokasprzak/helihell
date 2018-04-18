@@ -25,7 +25,10 @@ public class Phisic {
     public float maxVerticalSpeed;
     public float maxHorizontalSpeed;
     public Player player;
-
+    public float[] accArray={0,0,0,0,0,0,0,0,0,0};
+    public float wheelX,wheelY;
+    float accAverage;
+    public boolean isTouched;
 
     public Phisic(Player player){
         this.player=player;
@@ -42,32 +45,53 @@ public class Phisic {
         maxHorizontalSpeed=5;
         groundRriction=1;
         onGround=true;
+        wheelX=0;
+        wheelY=0;
+        isTouched=false;
+
+
 
 
 
     }
     
     public void update() {
-        this.setRotation();
-        if (Gdx.input.isTouched()) {
-            this.acceleration();
-            Gdx.app.log("ACC","rotation="+player.getRotation());
+      //  if(acceleromet)
+        //setRotationAccelerometr();
+            //else
+
+            acc=-((wheelX-64)/128)*90;
+
+        if(player.positionY<60){acc=0;
+            player.delay=1;
+            player.shootDeleay=1;}
+        for(int i=0;i<9;i++)
+        {
+            accArray[i]=accArray[i+1];
+        }
+        accArray[9]=acc;
+        accAverage=(accArray[0]+accArray[1]+accArray[2]+accArray[3]+accArray[4]+accArray[5]+accArray[6]+accArray[7]+accArray[8]+accArray[9])/10;
+        //if(acceleromet)player.rotate(-accAverage*10);
+        // else
+        player.sprite.setRotation(acc);
+        if (Gdx.input.isTouched()&&isTouched) {
+        //    this.acceleration();
+            accelerationWheel();
+
         } else {
             rotorSpeed -= 1;
-            if(rotorSpeed<0){rotorSpeed=0;}
 
         }
+        if(rotorSpeed<0){rotorSpeed=0;}
         verticalAcceleration = rotorSpeed * Gdx.graphics.getDeltaTime()* MathUtils.cos((float) ((Math.PI / 180)* (player.getRotation())));
         verticalSpeed += verticalAcceleration;
-        if(!onGround){
+         if(!onGround){
         verticalSpeed -= gravityForce*Gdx.graphics.getDeltaTime();}
         if(verticalSpeed>maxVerticalSpeed){verticalSpeed=maxVerticalSpeed;}
         horizontalAcceleration = rotorSpeed * Gdx.graphics.getDeltaTime() * MathUtils.sin((float) ((Math.PI / 180) * (player.getRotation())));
         horizontalSpeed -= horizontalAcceleration;
         if(horizontalSpeed>maxHorizontalSpeed){horizontalSpeed=maxHorizontalSpeed;}
         if(horizontalSpeed<-maxHorizontalSpeed){horizontalSpeed=-maxHorizontalSpeed;}
-        Gdx.app.log("SPEED",""+verticalSpeed);
-        Gdx.app.log("ROTORSPEED",""+rotorSpeed);
         //air resistance simulation
         if (horizontalAcceleration == 0) {
             if (horizontalSpeed > 0) {
@@ -79,19 +103,44 @@ public class Phisic {
                 else {horizontalSpeed += windResistance;}
             }
         }
+        if(player.positionY>600){player.positionY=600;
+        verticalSpeed=0;}
+        if(player.positionY<40){player.positionY=40;
+            verticalSpeed=0;}
+        if(player.positionX<-50){player.positionX=-50;
+        horizontalSpeed=0;}
+        if(player.positionX>3000){player.positionX=3000;
+            horizontalSpeed=0;}
+
+            Gdx.app.log("Speed",""+verticalSpeed);
+
         player.positionX+=horizontalSpeed;
         player.positionY+=verticalSpeed;
+        player.delay-=1*Gdx.graphics.getDeltaTime();
     }
 
     public void acceleration() {
+
         rotorSpeed += rotorAcceleration;
         if(rotorSpeed>rotorMaxSpeed){rotorSpeed=rotorMaxSpeed;}
+
     }
 
-    public void setRotation(){
+
+
+
+
+    public void setRotationAccelerometr(){
         acc=Gdx.input.getAccelerometerY();
-        player.rotate(-acc*10);
     }
+
+
+    public void accelerationWheel(){
+        rotorSpeed += rotorAcceleration*(1+wheelY/128);
+        if(rotorSpeed>rotorMaxSpeed*(1+wheelY/128)){rotorSpeed=rotorMaxSpeed*(1+wheelY/128);}
+        Gdx.app.log("ACC","rotor="+rotorSpeed);
+        }
+
     public boolean crash(){
         if(Math.abs(verticalSpeed)+Math.abs(horizontalSpeed)>3){
             return true;
@@ -102,6 +151,12 @@ public class Phisic {
         else{ horizontalSpeed-=groundRriction*Gdx.graphics.getDeltaTime();}
 
         return false;
+    }
+    public void steeringWheelInput(float x,float y ,boolean isTouched){
+    wheelX=x;
+    wheelY=y;
+    this.isTouched= isTouched;
+
     }
 
 }

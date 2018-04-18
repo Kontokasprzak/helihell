@@ -1,27 +1,26 @@
 package com.mygdx.game.Screens;
 
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.GameCore;
-import com.mygdx.game.Screens.MissionsScreen.Mission1;
-import com.mygdx.game.Screens.MissionsScreen.Mission2;
-import com.mygdx.game.Screens.MissionsScreen.Mission3;
-import com.mygdx.game.Singleton;
+
+import static com.badlogic.gdx.Gdx.input;
 
 /**
  * Created by Wqawer on 2018-04-11.
  */
 
-public class GameOver implements Screen{
-    BitmapFont gameOver;
+public class Info implements Screen {
+    BitmapFont author;
     GameCore game;
-    public GameOver(GameCore game){
-        gameOver= new BitmapFont();
+    public Info(GameCore game){
+        author= new BitmapFont();
         this.game=game;
         game.camera.position.set(0,0,0);
-        game.shootMeneger.reset();
     }
     @Override
     public void show() {
@@ -30,27 +29,20 @@ public class GameOver implements Screen{
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.camera.position.set(0,0,0);
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
-        gameOver.draw(game.batch,"GAME OVER",0,0);
+        author.draw(game.batch,"Made by: Michal Wawer",0,0);
+        author.draw(game.batch,"Graphic: Sebastian Urbanski",0,-30);
+        author.draw(game.batch,"Concept Artist: Anatolia Kilian",0,-60);
+        author.draw(game.batch,"Music: www.bensound.com",0,-90);
         game.batch.end();
-
-        if(Gdx.input.isTouched()){
-            switch (Singleton.getInstance().getLevel()){
-                case 0:
-                    game.setScreen(new Mission1(game));
-                    break;
-                case 1:
-                    game.setScreen(new Mission2(game));
-                    break;
-                case 2:
-                    game.setScreen(new Mission3(game));
-                    break;
-            }}
+        if (input.isKeyPressed(Input.Keys.BACK)){
+            game.setScreen(new Start(game));
+        }
     }
 
     @Override
@@ -78,5 +70,3 @@ public class GameOver implements Screen{
 
     }
 }
-
-

@@ -1,5 +1,6 @@
 package com.mygdx.game.AbstractClass;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -7,8 +8,14 @@ import com.badlogic.gdx.graphics.Texture;
  */
 
 public abstract class Vehicle extends EnemyUnit{
+    float speed=50;
+
     public Vehicle(Texture texture, float positionX, float positionY) {
         super(texture, positionX, positionY);
     }
+    public void gotoTarget(){
+        sprite.translate(speed* Gdx.graphics.getDeltaTime(),0);
+    }
+    public void flip(){sprite.flip(true,false);}
 
 }
