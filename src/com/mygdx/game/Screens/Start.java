@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Screens.MissionsScreen.Mission1;
 import com.mygdx.game.Screens.MissionsScreen.Mission2;
@@ -27,7 +28,9 @@ public class Start implements Screen {
     Music music;
     float logoX=0;
     float logoY=150;
-    boolean up=true;
+
+    float helipo=-400;
+    Sprite heli;
 
 
     public Start(GameCore game){
@@ -41,6 +44,10 @@ public class Start implements Screen {
         if(Singleton.getInstance().getmusic()){music.play();}
         music.setLooping(true);
         logo=new BitmapFont();
+        heli=new Sprite(game.graphicMeneger.player);
+        heli.setPosition(-400,50);
+        heli.flip(true,false);
+        heli.setRotation(-30);
 
 
     }
@@ -58,6 +65,7 @@ public class Start implements Screen {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
+        heli.draw(game.batch);
         logo.draw(game.batch,"HELI HELL",logoX,logoY);
         start.sprite.draw(game.batch);
         newGame.sprite.draw(game.batch);
@@ -114,15 +122,8 @@ public class Start implements Screen {
 
     }
     public void animation(){
-        if(up){
-       logoY+=4*Gdx.graphics.getDeltaTime();
-        if(logoY>160){up=false;}}
-        else {logoY-=4*Gdx.graphics.getDeltaTime();
-        if(logoY<150){up=true;}}
-
-
-
-
-        Gdx.app.log("Logo","y"+logoY);
+       helipo+=50*Gdx.graphics.getDeltaTime();
+       heli.setPosition(helipo,50);
+        if(helipo>600){helipo=-600;}
     }
 }
