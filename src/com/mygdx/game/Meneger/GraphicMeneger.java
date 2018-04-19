@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 
 public class GraphicMeneger {
-    Texture player;
+    public Texture player;
     public Texture bunker;
     public Texture rocket;
     public Texture bullet;
