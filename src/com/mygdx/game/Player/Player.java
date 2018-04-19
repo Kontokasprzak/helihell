@@ -1,9 +1,11 @@
 package com.mygdx.game.Player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Hitbox;
+import com.mygdx.game.Screens.GameOver;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
 
 public class Player {
     public Texture texture;
-    Sprite sprite;
+   public Sprite sprite;
     public int width;
     public int height;
     public Hitbox hitbox;
@@ -23,6 +25,8 @@ public class Player {
    public float positionX;
     public float positionY;
     public float shootDeleay;
+    public boolean isFlip;
+    public float delay;
     GameCore game;
     public Player(float positionX, float positionY, GameCore game){
         width=64;
@@ -31,9 +35,11 @@ public class Player {
         this.positionY=positionY;
         texture= new Texture("heli.png");
         sprite=new Sprite(texture);
+        sprite.flip(true,false);
         hitbox= new Hitbox((int)positionX,(int)positionY,width,height);
         playerRocketList= new ArrayList<PlayerRocket>();
         this.game= game;
+        isFlip=false;
 
     }
     public void render(GameCore game){
@@ -48,7 +54,9 @@ public class Player {
     }
     public void shoot(){
         if(shootDeleay>0){return;}
-        game.shootMeneger.addProjectile(new PlayerRocket(positionX,positionY,sprite.getRotation(),250,0,game.graphicMeneger.rocket));
+        float rotation=sprite.getRotation();
+        if (isFlip){rotation-=180;}
+        game.shootMeneger.addProjectile(new PlayerRocket(positionX+64,positionY+15,rotation,250,0,game.graphicMeneger.rocket));
         shootDeleay=1;
     }
 
@@ -56,5 +64,11 @@ public class Player {
     public float getRotation(){
         return sprite.getRotation();
     }
-    public void flip(){sprite.flip(true,false);}
+    public void flip(){
+        if(delay>0){return;}
+        sprite.flip(true,false);
+    delay=1;
+    isFlip=!isFlip;}
+    public void hit(){game.setScreen(new GameOver(game));
+        }
 }

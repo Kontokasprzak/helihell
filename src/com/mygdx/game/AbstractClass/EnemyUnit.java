@@ -13,7 +13,7 @@ import com.mygdx.game.Hitbox;
 public abstract class EnemyUnit {
     Texture texture;
     int hp;
-    Sprite sprite;
+    public Sprite sprite;
     public Hitbox hitbox;
     public EnemyUnit(Texture texture, float positionX,float  positionY){
         this.texture=texture;
@@ -25,6 +25,7 @@ public abstract class EnemyUnit {
     public void hitboxPositionUpdate(){hitbox.setLocation(sprite.getX(),sprite.getY());}
     public void render(Batch batch){
         sprite.draw(batch);
+        hitboxPositionUpdate();
     }
 
 

@@ -18,6 +18,7 @@ public class GameCore extends Game
 	public OrthographicCamera cameraUserLayer;
 	public GraphicMeneger graphicMeneger;
 	public ShootMeneger shootMeneger;
+	public InputTranslator inputTranslator;
 
 	public GameCore() {
 		super();
@@ -36,7 +37,8 @@ public class GameCore extends Game
 		cameraUserLayer = new OrthographicCamera(800,480);
 		graphicMeneger=new GraphicMeneger();
 		shootMeneger=new ShootMeneger(batch);
-		this.setScreen(new Mission2(this));
+		inputTranslator= new InputTranslator();
+		this.setScreen(new Start(this));
 	}
 
 	@Override
