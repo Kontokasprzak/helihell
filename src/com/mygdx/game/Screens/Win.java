@@ -4,11 +4,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Screens.MissionsScreen.Mission1;
 import com.mygdx.game.Screens.MissionsScreen.Mission2;
 import com.mygdx.game.Screens.MissionsScreen.Mission3;
+import com.mygdx.game.Screens.MissionsScreen.Mission4;
+import com.mygdx.game.Screens.MissionsScreen.Mission5;
 import com.mygdx.game.Singleton;
 
 /**
@@ -18,6 +21,7 @@ import com.mygdx.game.Singleton;
 public class Win implements Screen {
     BitmapFont congratulations;
     GameCore game;
+    Texture texture;
     public Win(GameCore game){
         congratulations= new BitmapFont();
         this.game=game;
@@ -27,6 +31,9 @@ public class Win implements Screen {
         Gdx.app.log("Singleton",""+i);
         Singleton.getInstance().putLevel(i);
         game.shootMeneger.reset();
+        if(i==4){ game.setScreen(new WinScreen(game));}
+        texture=new Texture("winScreen.png");
+
 
 
     }
@@ -43,6 +50,7 @@ public class Win implements Screen {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
+        game.batch.draw(texture,-400,-240);
         congratulations.draw(game.batch,"Congratulations",0,0);
         game.batch.end();
         if(Gdx.input.isTouched()){
@@ -56,6 +64,12 @@ public class Win implements Screen {
                 case 2:
                     game.setScreen(new Mission3(game));
                     break;
+                case 3:
+                    game.setScreen(new Mission4(game));
+                    break;
+
+
+
             }}
     }
 

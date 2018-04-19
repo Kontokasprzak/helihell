@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.AbstractClass.EnemyUnit;
+import com.mygdx.game.DialogWindow;
 import com.mygdx.game.Enemy.Bunker;
 import com.mygdx.game.Enemy.Tower;
 import com.mygdx.game.GameCore;
@@ -34,26 +35,28 @@ public class Mission2 implements Screen {
     Button fire, flip;
     ArrayList<EnemyUnit> listOfEnemy;
     UserInterface userInterface;
-    Tower tower;
+    Tower tower,tower2;
     Bunker bunker;
 
 
-    public Mission2(GameCore game){
+    public Mission2(GameCore game) {
 
-        this.game=game;
-        player=new Player(50,50, game);
-        pixmap=new Pixmap(Gdx.files.internal("pixmap1.png"));
-        mapa=new Texture("map1.png");
-        phisic=new Phisic(player);
-        listOfEnemy= new ArrayList<EnemyUnit>();
-        fire= new Button(200,-200,game.graphicMeneger.shootButton);
-        flip= new Button(250,-150,game.graphicMeneger.flipButton);
+        this.game = game;
+        player = new Player(50, 50, game);
+        pixmap = new Pixmap(Gdx.files.internal("pixmap2.png"));
+        mapa = new Texture("map2.png");
+        phisic = new Phisic(player);
+        listOfEnemy = new ArrayList<EnemyUnit>();
+        fire = new Button(200, -200, game.graphicMeneger.shootButton);
+        flip = new Button(250, -150, game.graphicMeneger.flipButton);
 
-        userInterface= new UserInterface(game,player,phisic);
-        tower=new Tower(game.graphicMeneger.tower,1500,50);
-        bunker=new Bunker(game.graphicMeneger.bunker,1600,50);
+        userInterface = new UserInterface(game, player, phisic);
+        tower = new Tower(game.graphicMeneger.tower, 1500, 50);
+        bunker = new Bunker(game.graphicMeneger.bunker, 1600, 50);
+        tower2 = new Tower(game.graphicMeneger.tower, 1700, 50);
         setEnemy();
     }
+
     @Override
     public void show() {
     }
@@ -64,24 +67,25 @@ public class Mission2 implements Screen {
         phisic.update();
 
 
-
-
-        Gdx.gl.glClearColor(0, 1, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.camera.position.set(player.positionX,player.positionY,0);
+        game.camera.position.set(player.positionX, player.positionY, 0);
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
-        game.batch.draw(mapa,0,0);
+        sceen();
+        game.batch.draw(mapa, -500, 0);
         player.render(game);
-        game.shootMeneger.shootUpdate(listOfEnemy,player);
-        for(EnemyUnit x:listOfEnemy)
-        {
+        game.shootMeneger.shootUpdate(listOfEnemy, player);
+        for (EnemyUnit x : listOfEnemy) {
             x.render(game.batch);
+            if (x instanceof Tower) {
+                ((Tower) x).shoot(player.positionX, player.positionY, game);
+            }
         }
-        tower.shoot(player.positionX,player.positionY,game);
-        player.shootDeleay-=1*Gdx.graphics.getDeltaTime();
+
+        player.shootDeleay -= 1 * Gdx.graphics.getDeltaTime();
         game.batch.end();
         userInterface.render();
 
@@ -112,35 +116,55 @@ public class Mission2 implements Screen {
     public void dispose() {
 
     }
-    public void pixmanager(){
-        kodKoloru=pixmap.getPixel((int)player.positionX,(int)player.positionY);
+
+    public void pixmanager() {
+        kodKoloru = pixmap.getPixel((int) player.positionX+500, (int) player.positionY);
         color = new Color(kodKoloru);
-        int blue=(int)(color.b*255);
-        int green=(int)(color.g*255);
-        int red=(int)(color.r*255);
-        if(winManager()){game.setScreen(new Win(game));}
-        if(blue==255){
-            phisic.onGround=true;
-            if(crash()){
+        int blue = (int) (color.b * 255);
+        int green = (int) (color.g * 255);
+        int red = (int) (color.r * 255);
+        if (winManager(green)) {
+            game.setScreen(new Win(game));
+        }
+        if (blue == 255) {
+            phisic.onGround = true;
+            if (crash()) {
                 game.setScreen(new GameOver(game));
             }
+        } else {
+            phisic.onGround = false;
         }
-        else{phisic.onGround=false;}
     }
 
-    public boolean winManager(){
+    public boolean winManager(int green) {
 
 
-        if(listOfEnemy.size()==0){return true;}
+
+        if (listOfEnemy.size() == 0&&green==255) {
+            return true;
+        }
         return false;
     }
-    public boolean crash(){
+
+    public boolean crash() {
 
         return phisic.crash();
 
 
     }
-    public void setEnemy(){
+
+    public void setEnemy() {
         listOfEnemy.add(tower);
-        listOfEnemy.add(bunker);}
+        listOfEnemy.add(bunker);
+        listOfEnemy.add(tower2);
+    }
+
+    public void sceen() {
+        if(listOfEnemy.size()>0){
+        DialogWindow window = new DialogWindow("Idzie ci bardzo dobrze", "Polec na zachod zbombarduj baze wroga i wroc", game.graphicMeneger.general);
+        window.render(game.batch);}
+        else {
+            DialogWindow window = new DialogWindow("Swietna robota", "Tak trzymaj", game.graphicMeneger.general);
+            window.render(game.batch);}
+    }
 }

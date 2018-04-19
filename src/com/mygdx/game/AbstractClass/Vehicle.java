@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 
 public abstract class Vehicle extends EnemyUnit{
-    float speed=50;
+   public float speed=50;
 
     public Vehicle(Texture texture, float positionX, float positionY) {
         super(texture, positionX, positionY);

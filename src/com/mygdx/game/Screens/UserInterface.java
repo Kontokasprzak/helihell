@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Phisic;
 import com.mygdx.game.Player.Player;
+import com.mygdx.game.Singleton;
 
 /**
  * Created by Wqawer on 2018-04-18.
@@ -28,17 +29,37 @@ public class UserInterface {
         game.batch.begin();
         fire.sprite.draw(game.batch);
         flip.sprite.draw(game.batch);
-        steringWheel.sprite.draw(game.batch);
         if(Gdx.input.isTouched()) {
             if (fire.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))) {
                 player.shoot();
             }
-            if (flip.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))){
+            if (flip.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))) {
                 player.flip();
             }
+        }
+        if(Gdx.input.isTouched(1)) {
+            if (fire.isClicked(game.inputTranslator.translateX(Gdx.input.getX(1)), game.inputTranslator.translateY(Gdx.input.getY()))) {
+                player.shoot();
+            }
+            if (flip.isClicked(game.inputTranslator.translateX(Gdx.input.getX(1)), game.inputTranslator.translateY(Gdx.input.getY()))) {
+                player.flip();
+            }
+        }
 
-            if(steringWheel.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))){
-                phisic.steeringWheelInput(game.inputTranslator.translateX(Gdx.input.getX())-steringWheel.positionX,game.inputTranslator.translateY(Gdx.input.getY())-steringWheel.positionX,true);
+
+        if(!Singleton.getInstance().getAccelerometr()){steringWheel.sprite.draw(game.batch);
+
+
+            if(steringWheel.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))) {
+                phisic.steeringWheelInput(game.inputTranslator.translateX(Gdx.input.getX()) - steringWheel.positionX, game.inputTranslator.translateY(Gdx.input.getY()) - steringWheel.positionX, true);
+                if (Gdx.input.isTouched()) {
+                    if (fire.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))) {
+                        player.shoot();
+                    }
+                    if (flip.isClicked(game.inputTranslator.translateX(Gdx.input.getX()), game.inputTranslator.translateY(Gdx.input.getY()))) {
+                        player.flip();
+                    }
+                }
             }
 
         }

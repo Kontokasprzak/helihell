@@ -24,12 +24,22 @@ public class Singleton {
         public int getLevel(){
             return prefs.getInteger("Level");
         }
+
+
+
     public void putAccelerometr(boolean isActive){
         prefs.putBoolean("Accelerometr", isActive);
         prefs.flush();
     }
-    public boolean putAccelerometr(){
+    public boolean getAccelerometr(){
         return prefs.getBoolean("Accelerometr");
+    }
+    public void putmusic(boolean isActive){
+        prefs.putBoolean("music", isActive);
+        prefs.flush();
+    }
+    public boolean getmusic(){
+        return prefs.getBoolean("music");
     }
 
     }

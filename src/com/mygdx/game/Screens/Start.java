@@ -12,6 +12,8 @@ import com.mygdx.game.GameCore;
 import com.mygdx.game.Screens.MissionsScreen.Mission1;
 import com.mygdx.game.Screens.MissionsScreen.Mission2;
 import com.mygdx.game.Screens.MissionsScreen.Mission3;
+import com.mygdx.game.Screens.MissionsScreen.Mission4;
+import com.mygdx.game.Screens.MissionsScreen.Mission5;
 import com.mygdx.game.Singleton;
 
 /**
@@ -36,7 +38,7 @@ public class Start implements Screen {
         options= new Button(0,-100,game.graphicMeneger.optionsButton);
         info= new Button(300,200,game.graphicMeneger.infoButton);
         music= Gdx.audio.newMusic(Gdx.files.internal("Start.mp3"));
-        music.play();
+        if(Singleton.getInstance().getmusic()){music.play();}
         music.setLooping(true);
         logo=new BitmapFont();
 
@@ -73,6 +75,12 @@ public class Start implements Screen {
                     break;
                 case 2:
                     game.setScreen(new Mission3(game));
+                    break;
+                case 3:
+                    game.setScreen(new Mission4(game));
+                    break;
+                case 4:
+                    game.setScreen(new Mission5(game));
                     break;
             }}
         if(newGame.isClicked(game.inputTranslator.translateX(Gdx.input.getX()),game.inputTranslator.translateY(Gdx.input.getY()))){music.dispose();game.setScreen(new Mission1(game));}

@@ -56,11 +56,11 @@ public class Phisic {
     }
     
     public void update() {
-      //  if(acceleromet)
-        //setRotationAccelerometr();
-            //else
+       if(Singleton.getInstance().getAccelerometr()){
+        setRotationAccelerometr();}
+            else{
 
-            acc=-((wheelX-64)/128)*90;
+            acc=-((wheelX-64)/128)*90;}
 
         if(player.positionY<60){acc=0;
             player.delay=1;
@@ -71,12 +71,13 @@ public class Phisic {
         }
         accArray[9]=acc;
         accAverage=(accArray[0]+accArray[1]+accArray[2]+accArray[3]+accArray[4]+accArray[5]+accArray[6]+accArray[7]+accArray[8]+accArray[9])/10;
-        //if(acceleromet)player.rotate(-accAverage*10);
-        // else
-        player.sprite.setRotation(acc);
-        if (Gdx.input.isTouched()&&isTouched) {
-        //    this.acceleration();
-            accelerationWheel();
+        if(Singleton.getInstance().getAccelerometr())player.rotate(-accAverage*10);
+        else{
+        player.sprite.setRotation(acc);}
+        if (Gdx.input.isTouched()) {
+            if(Singleton.getInstance().getAccelerometr()){
+           this.acceleration();}
+           if (isTouched){accelerationWheel();}
 
         } else {
             rotorSpeed -= 1;

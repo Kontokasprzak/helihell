@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.AbstractClass.EnemyUnit;
+import com.mygdx.game.DialogWindow;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Phisic;
 import com.mygdx.game.Player.Player;
@@ -14,6 +16,8 @@ import com.mygdx.game.Screens.GameOver;
 import com.mygdx.game.Screens.UserInterface;
 import com.mygdx.game.Screens.Win;
 import com.mygdx.game.Singleton;
+
+import java.util.ArrayList;
 
 import sun.management.jmxremote.SingleEntryRegistry;
 
@@ -30,6 +34,7 @@ public class Mission1 implements Screen {
     Phisic phisic;
     Pixmap pixmap;
     UserInterface userInterface;
+
     public Mission1(GameCore game){
 
         this.game=game;
@@ -39,6 +44,8 @@ public class Mission1 implements Screen {
         phisic=new Phisic(player);
         Singleton.getInstance().putLevel(0);
         userInterface= new UserInterface(game,player,phisic);
+
+
 
 
     }
@@ -55,7 +62,7 @@ public class Mission1 implements Screen {
 
 
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
        game.camera.position.set(player.positionX,player.positionY,0);
@@ -65,11 +72,8 @@ public class Mission1 implements Screen {
 
         game.batch.draw(mapa,-500,0);
         player.render(game);
-        if(Gdx.input.isTouched()){
-         //   player.playerRocketList.add(new PlayerRocket(player.positionX,player.positionY,player.getRotation()));
-            }
-
-       // for(int i=0;i<player.playerRocketList.size();i++){player.playerRocketList.get(i).render(game);}
+        scen();
+        game.shootMeneger.shootUpdate(new ArrayList<EnemyUnit>(),player);
         game.batch.end();
         game.batch.setProjectionMatrix(game.cameraUserLayer.combined);
         game.batch.begin();
@@ -133,4 +137,13 @@ public class Mission1 implements Screen {
 
 
     }
+    public void scen(){
+
+            DialogWindow window=new DialogWindow("Jestes naszym najlepszym pilotem, musisz nam pomoc","Polec na zachod z zaopatrzeniem",game.graphicMeneger.general);
+            window.render(game.batch);
+
+
+
+    }
+
 }

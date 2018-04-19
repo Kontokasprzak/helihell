@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.AbstractClass.EnemyUnit;
 import com.mygdx.game.AbstractClass.Projectile;
 import com.mygdx.game.Enemy.EnemyRocket;
+import com.mygdx.game.Enemy.Truck;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Player.Player;
 import com.mygdx.game.Player.PlayerRocket;
@@ -36,11 +37,11 @@ public class ShootMeneger {
 
        if (isOut(projectilesList.get(i))){projectilesList.remove(i);}
       else if(projectilesList.get(i) instanceof PlayerRocket){
-         for(int j=0;j<listOfEnemy.size();j++)
+          if(listOfEnemy.size()>0&&projectilesList.size()>0){for(int j=0;j<listOfEnemy.size();j++)
          if(listOfEnemy.get(j).hitbox.overlaps(projectilesList.get(i).positionX,projectilesList.get(i).positionY)){listOfEnemy.remove(j);
-         projectilesList.remove(i);}}
+         projectilesList.remove(i);}}}
       else if(projectilesList.get(i) instanceof EnemyRocket){
-            Gdx.app.log("HIT","Działam");
+
             if(player.hitbox.overlaps(projectilesList.get(i).positionX,projectilesList.get(i).positionY))
          player.hit();}
 
@@ -50,4 +51,18 @@ public class ShootMeneger {
    public void reset(){
       projectilesList= new ArrayList<Projectile>();
    }
+   public boolean shootUpdateTruck(Truck truck){
+      for(int i=0;i<projectilesList.size();i++)
+      {
+
+
+
+          if(projectilesList.get(i) instanceof EnemyRocket){
+
+            if(truck.hitbox.overlaps(projectilesList.get(i).positionX,projectilesList.get(i).positionY))
+               return true;}
+
+
+      }
+   return false;}
 }

@@ -1,10 +1,12 @@
 package com.mygdx.game.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.GameCore;
 import com.mygdx.game.Screens.MissionsScreen.Mission1;
 import com.mygdx.game.Screens.MissionsScreen.Mission2;
@@ -17,16 +19,20 @@ import com.mygdx.game.Singleton;
  * Created by Wqawer on 2018-04-11.
  */
 
-public class GameOver implements Screen{
-    BitmapFont gameOver;
+public class WinScreen implements Screen {
+    BitmapFont congratulations;
     GameCore game;
     Texture texture;
-    public GameOver(GameCore game){
-        gameOver= new BitmapFont();
+    public WinScreen(GameCore game){
+        congratulations= new BitmapFont();
         this.game=game;
         game.camera.position.set(0,0,0);
+        int i=Singleton.getInstance().getLevel();
+        i+=1;
+        Gdx.app.log("Singleton",""+i);
+        Singleton.getInstance().putLevel(i);
         game.shootMeneger.reset();
-        texture= new Texture("gameOver.png");
+        texture=new Texture("winScreen.png");
 
     }
     @Override
@@ -43,26 +49,9 @@ public class GameOver implements Screen{
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
         game.batch.draw(texture,-400,-240);
-        gameOver.draw(game.batch,"GAME OVER",0,0);
+        congratulations.draw(game.batch,"Congratulations",0,0);
         game.batch.end();
-
-        if(Gdx.input.isTouched()){
-            switch (Singleton.getInstance().getLevel()){
-                case 0:
-                    game.setScreen(new Mission1(game));
-                    break;
-                case 1:
-                    game.setScreen(new Mission2(game));
-                    break;
-                case 2:
-                    game.setScreen(new Mission3(game));
-                    break;
-                case 3:
-                    game.setScreen(new Mission4(game));
-                    break;
-                case 4:
-                    game.setScreen(new Mission5(game));
-            }}
+        if(Gdx.input.isTouched()){game.setScreen(new Start(game));}
     }
 
     @Override
@@ -90,5 +79,3 @@ public class GameOver implements Screen{
 
     }
 }
-
-

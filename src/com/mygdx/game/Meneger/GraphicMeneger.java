@@ -22,6 +22,11 @@ public class GraphicMeneger {
     public Texture steringWheel;
     public Texture tower;
     public Texture hummer;
+    public Texture pilot;
+    public Texture general;
+    public Texture no;
+    public Texture yes;
+
 
     public GraphicMeneger(){
         player=new Texture("heli.png");
@@ -38,6 +43,10 @@ public class GraphicMeneger {
         steringWheel= new Texture("steringWheel.png");
         tower=new Texture("rangertower.png");
         hummer=new Texture("hummer.png");
+        pilot=new Texture("pilot.JPEG");
+        general=new Texture("general.png");
+        no= new Texture("no.png");
+        yes= new Texture("yes.png");
 
 
 
